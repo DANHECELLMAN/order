@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>AprilSmart 定制需求提交</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f4f4f4; padding: 40px 20px; }
+        .form-container { max-width: 550px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        h2 { text-align: center; font-weight: 300; letter-spacing: 1px; margin-bottom: 30px; color: #000; }
+        .group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 13px; text-transform: uppercase; color: #666; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 4px; box-sizing: border-box; background: #fafafa; font-size: 14px; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #000; background: #fff; }
+        .row { display: flex; gap: 15px; }
+        .row div { flex: 1; }
+        button { width: 100%; padding: 16px; background: #000; color: #fff; border: none; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; text-transform: uppercase; }
+        button:hover { background: #333; }
+        .footer-note { font-size: 12px; color: #999; text-align: center; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>CUSTOM ORDER FORM</h2>
+    <form action="https://formspree.io/f/xdanvzbn" method="POST">
+        
+        <div class="group">
+            <label>Full Name / 姓名</label>
+            <input type="text" name="Customer Name" placeholder="您的姓名" required>
+        </div>
+
+        <div class="group">
+            <label>Email / 邮箱 (用于接收报价)</label>
+            <input type="email" name="_replyto" placeholder="example@email.com" required>
+        </div>
+
+        <div class="row group">
+            <div>
+                <label>Width / 宽度 (cm)</label>
+                <input type="number" name="Width" placeholder="W" required>
+            </div>
+            <div>
+                <label>Height / 高度 (cm)</label>
+                <input type="number" name="Height" placeholder="H" required>
+            </div>
+        </div>
+
+        <div class="group">
+            <label>Fabric Series / 面料系列</label>
+            <select name="Fabric">
+                <option value="Bermuda 100% Blackout">Bermuda (100% Blackout)</option>
+                <option value="Safari Texture">Safari (Marble Texture)</option>
+                <option value="Aventus">Aventus (Minimalist)</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label>Motor System / 电机系统</label>
+            <select name="Motor">
+                <option value="SilentWAVE">SilentWAVE (Battery)</option>
+                <option value="PowerWIRE">PowerWIRE (Hardwired)</option>
+                <option value="SolarSync">SolarSync (Solar)</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label>Smart Integration / 智能系统</label>
+            <select name="Smart System">
+                <option value="Matter">Matter</option>
+                <option value="Apple Homekit">Apple Homekit</option>
+                <option value="Alexa/Google">Alexa / Google Home</option>
+                <option value="None">None</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label>Additional Notes / 备注</label>
+            <textarea name="Message" rows="4" placeholder="例如：主卧使用，需要极致遮光。Room type, installation height, etc."></textarea>
+        </div>
+
+        <input type="hidden" name="_subject" value="New AprilSmart Customization Request!">
+        
+        <button type="submit">SUBMIT ORDER REQUEST</button>
+        <p class="footer-note">AprilSmart ® Customized Shading Solutions</p>
+    </form>
+</div>
+
+</body>
+</html>
