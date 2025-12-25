@@ -5,87 +5,297 @@
     <title>AprilSmart | China Custom Motorized Blinds Order Form</title>
     <style>
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f4f4f4; padding: 40px 20px; }
-        .form-container { max-width: 550px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .form-container { max-width: 700px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
         h2 { text-align: center; font-weight: 300; letter-spacing: 1px; margin-bottom: 30px; color: #000; }
-        .group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 13px; text-transform: uppercase; color: #666; font-weight: bold; }
+        .group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; color: #666; font-weight: bold; }
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 4px; box-sizing: border-box; background: #fafafa; font-size: 14px; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #000; background: #fff; }
-        .row { display: flex; gap: 15px; }
+        
+        .row { display: flex; gap: 15px; margin-bottom: 10px; }
         .row div { flex: 1; }
-        button { width: 100%; padding: 16px; background: #000; color: #fff; border: none; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; text-transform: uppercase; }
-        button:hover { background: #333; }
-        .footer-note { font-size: 12px; color: #999; text-align: center; margin-top: 15px; }
+
+        /* 安装卡片样式 */
+        .mount-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .mount-card { border: 2px solid #eee; border-radius: 8px; padding: 15px; cursor: pointer; transition: 0.3s; position: relative; }
+        .mount-card input { position: absolute; opacity: 0; }
+        .mount-card input:checked ~ .card-ui { border: 2px solid #000; position: absolute; top:0; left:0; right:0; bottom:0; border-radius: 6px; }
+        .mount-img { width: 100%; border-radius: 4px; margin-bottom: 10px; cursor: zoom-in; }
+        
+        /* --- 通用滚动条样式容器 --- */
+        .options-scroll-box { 
+            margin-top: 10px; 
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            max-height: 400px; 
+            overflow-y: auto; 
+        }
+
+        /* 滚动条美化 */
+        .options-scroll-box::-webkit-scrollbar { width: 6px; }
+        .options-scroll-box::-webkit-scrollbar-track { background: #f1f1f1; }
+        .options-scroll-box::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+        /* 通用网格布局 */
+        .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+        .grid-item { border: 1px solid #eee; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; background: #fff; }
+        .grid-item:hover { border-color: #999; }
+        .grid-item img { width: 100%; height: 100px; object-fit: cover; border-radius: 4px; margin-bottom: 8px; cursor: zoom-in; }
+        .grid-item span { font-size: 11px; color: #333; display: block; line-height: 1.2; }
+        
+        /* 选中逻辑样式 */
+        .grid-item input { position: absolute; opacity: 0; }
+        .grid-item input:checked + .item-ui { border: 2.5px solid #000; position: absolute; top:0; left:0; right:0; bottom:0; border-radius: 6px; }
+
+        /* 图片预览 Modal */
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; cursor: zoom-out; }
+        #modal img { max-width: 90%; max-height: 90%; border-radius: 5px; }
+
+        button { width: 100%; padding: 16px; background: #000; color: #fff; border: none; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .footer-note { font-size: 12px; color: #999; text-align: center; margin-top: 20px; }
+        
+        /* 特定板块样式微调 */
+        #fabricDetailSection { display: none; }
+        .must-pick-note { font-size: 11px; color: #e74c3c; font-weight: normal; text-transform: none; margin-left: 5px; }
+
+        /* 紧凑型板块样式（用于 Roll Position 和 Motor Side） */
+        .compact-selection { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .compact-selection .grid-item img { height: 80px; }
     </style>
 </head>
 <body>
 
 <div class="form-container">
     <h2>CUSTOM ORDER FORM</h2>
-    <form action="https://formspree.io/f/xdanvzbn" method="POST">
+    <form action="https://formspree.io/f/xdanvzbn" method="POST" onsubmit="return validateForm()">
         
         <div class="group">
             <label>Full Name / 姓名</label>
-            <input type="text" name="Customer Name" placeholder="您的姓名" required>
+            <input type="text" name="Customer Name" required>
         </div>
 
         <div class="group">
-            <label>Email / 邮箱 (用于接收报价)</label>
-            <input type="email" name="_replyto" placeholder="example@email.com" required>
+            <label>Email / 邮箱</label>
+            <input type="email" name="_replyto" required>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Width / 宽度 (Whole)</label>
+                <input type="number" name="Width_Base" required>
+            </div>
+            <div>
+                <label>Height / 高度 (Whole)</label>
+                <input type="number" name="Height_Base" required>
+            </div>
         </div>
 
         <div class="row group">
             <div>
-                <label>Width / 宽度 (cm)</label>
-                <input type="number" name="Width" placeholder="W" required>
+                <label>Width: Fractional</label>
+                <select name="Width_Fraction">
+                    <option value="0/0">0/0</option>
+                    <option value="1/8">1/8"</option>
+                    <option value="1/4">1/4"</option>
+                    <option value="3/8">3/8"</option>
+                    <option value="1/2">1/2"</option>
+                    <option value="5/8">5/8"</option>
+                    <option value="3/4">3/4"</option>
+                    <option value="7/8">7/8"</option>
+                </select>
             </div>
             <div>
-                <label>Height / 高度 (cm)</label>
-                <input type="number" name="Height" placeholder="H" required>
+                <label>Height: Fractional</label>
+                <select name="Height_Fraction">
+                    <option value="0/0">0/0</option>
+                    <option value="1/8">1/8"</option>
+                    <option value="1/4">1/4"</option>
+                    <option value="3/8">3/8"</option>
+                    <option value="1/2">1/2"</option>
+                    <option value="5/8">5/8"</option>
+                    <option value="3/4">3/4"</option>
+                    <option value="7/8">7/8"</option>
+                </select>
             </div>
         </div>
 
         <div class="group">
-            <label>Fabric Series / 面料系列</label>
-            <select name="Fabric">
-                <option value="Bermuda 100% Blackout">Bermuda (100% Blackout)</option>
-                <option value="Safari Texture">Safari (Marble Texture)</option>
-                <option value="Aventus">Aventus (Minimalist)</option>
-            </select>
+            <label>Mount Type / 安装方式</label>
+            <div class="mount-options">
+                <label class="mount-card">
+                    <input type="radio" name="Mount_Type" value="Inside Mount" checked>
+                    <div class="card-ui"></div>
+                    <div class="card-content">
+                        <img src="image/inside.png" class="mount-img" onclick="zoomImg(this.src)" alt="Inside">
+                        <div style="font-size:11px;"><b>INSIDE MOUNT</b><br>W=Order W, H=Order H<br>Depth≥2"</div>
+                    </div>
+                </label>
+                <label class="mount-card">
+                    <input type="radio" name="Mount_Type" value="Outside Mount">
+                    <div class="card-ui"></div>
+                    <div class="card-content">
+                        <img src="image/outside.png" class="mount-img" onclick="zoomImg(this.src)" alt="Outside">
+                        <div style="font-size:11px;"><b>OUTSIDE MOUNT</b><br>W=Win+6", H=Win+6"<br>*Best for Blackout</div>
+                    </div>
+                </label>
+            </div>
         </div>
 
         <div class="group">
-            <label>Motor System / 电机系统</label>
-            <select name="Motor">
-                <option value="SilentWAVE">SilentWAVE (Battery)</option>
-                <option value="PowerWIRE">PowerWIRE (Hardwired)</option>
-                <option value="SolarSync">SolarSync (Solar)</option>
+            <label>Fabric Category / 面料大类</label>
+            <select id="fabricCategory" name="Fabric_Category" onchange="updateFabricList()">
+                <option value="">请选择系列 / Select Series...</option>
+                <option value="blackout">100% Blackout Roller Shades (27款)</option>
+                <option value="filtering">Light Filtering Roller Shades (25款)</option>
+                <option value="zebra">Zebra Shades (12款)</option>
+                <option value="cellular">Cellular Shades (20款)</option>
+                <option value="roman">Roman Shades (24款)</option>
+                <option value="woven">Woven Wood Shades (28款)</option>
+                <option value="outdoor">Outdoor Shades (16款)</option>
             </select>
+
+            <div id="fabricDetailSection" class="options-scroll-box">
+                <label>Select Style / 选择款式</label>
+                <div id="fabricGrid" class="selection-grid"></div>
+            </div>
         </div>
 
         <div class="group">
-            <label>Smart Integration / 智能系统</label>
-            <select name="Smart System">
-                <option value="Matter">Matter</option>
-                <option value="Apple Homekit">Apple Homekit</option>
-                <option value="Alexa/Google">Alexa / Google Home</option>
-                <option value="None">None</option>
-            </select>
+            <label>Motor Type</label>
+            <div class="options-scroll-box">
+                <div class="selection-grid">
+                    <label class="grid-item"><input type="radio" name="Motor_Type" value="Standard Motor" checked><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Standard+Motor" onclick="zoomImg(this.src)"><span>Standard Motor</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Type" value="Standard Motor+HUB"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Motor+HUB" onclick="zoomImg(this.src)"><span>Standard Motor+HUB</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Type" value="MATTER Motor Over Thread"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=MATTER+Motor" onclick="zoomImg(this.src)"><span>MATTER Motor (homekit)</span></label>
+                </div>
+            </div>
         </div>
 
         <div class="group">
-            <label>Additional Notes / 备注</label>
-            <textarea name="Message" rows="4" placeholder="例如：主卧使用，需要极致遮光。Room type, installation height, etc."></textarea>
+            <label>Valance & Rod Options</label>
+            <div class="options-scroll-box">
+                <div class="selection-grid">
+                    <label class="grid-item"><input type="radio" name="Valance" value="White Square Valance" checked><div class="item-ui"></div><img src="https://placehold.co/200x150?text=White+Valance" onclick="zoomImg(this.src)"><span>With Square Valance - White</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Black Square Valance"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Black+Valance" onclick="zoomImg(this.src)"><span>With Square Valance - Black</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Tonal Valance Fabric Insert"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Tonal+Valance" onclick="zoomImg(this.src)"><span>Tonal Valance With Fabric Inserts</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Standard Bottom Rod"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Std+Rod" onclick="zoomImg(this.src)"><span>Standard Bottom Rod</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Fabric Wrapped Rod"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Wrapped+Rod" onclick="zoomImg(this.src)"><span>Fabric Wrapped Bottom Rod</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="White Square Rod"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=White+Rod" onclick="zoomImg(this.src)"><span>Square Bottom Rod - White</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Black Square Rod"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Black+Rod" onclick="zoomImg(this.src)"><span>Square Bottom Rod - Black</span></label>
+                </div>
+            </div>
         </div>
 
-        <input type="hidden" name="_subject" value="New AprilSmart Customization Request!">
-        
+        <div class="row group">
+            <div style="flex:1;">
+                <label>Roll Position</label>
+                <div class="compact-selection">
+                    <label class="grid-item"><input type="radio" name="Roll_Position" value="Standard Roll" checked><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Standard" onclick="zoomImg(this.src)"><span>Standard Roll</span></label>
+                    <label class="grid-item"><input type="radio" name="Roll_Position" value="Reverse Roll"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Reverse" onclick="zoomImg(this.src)"><span>Reverse Roll</span></label>
+                </div>
+            </div>
+            <div style="flex:1;">
+                <label>Motor Side</label>
+                <div class="compact-selection">
+                    <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Left" checked><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Left" onclick="zoomImg(this.src)"><span>Motor-Left</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Right"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Right" onclick="zoomImg(this.src)"><span>Motor-Right</span></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="group">
+            <label>Other accessories <span class="must-pick-note">(Required: pick Charger or Magnetic Cable)</span></label>
+            <div class="options-scroll-box">
+                <div class="selection-grid" id="accGrid">
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="1-ch remote"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=1-ch" onclick="zoomImg(this.src)"><span>1-channels remote</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="15-ch remote"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=15-ch" onclick="zoomImg(this.src)"><span>15-channels remote</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Block"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Block" onclick="zoomImg(this.src)"><span>Charger Block</span></label>
+                    
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Cable" class="cable-group"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Charger+Cable" onclick="zoomImg(this.src)"><span>Charger Cable</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Magnetic Cable" class="cable-group"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Magnetic+Cable" onclick="zoomImg(this.src)"><span>Magnetic Cable</span></label>
+                    
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-White"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Blocker+W" onclick="zoomImg(this.src)"><span>Light Blockers - White</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-Black"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Blocker+B" onclick="zoomImg(this.src)"><span>Light Blockers - Black</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-White"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Rail+W" onclick="zoomImg(this.src)"><span>Side Rail Track-White</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-Black"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Rail+B" onclick="zoomImg(this.src)"><span>Side Rail Track-Black</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Solar Panel"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Solar" onclick="zoomImg(this.src)"><span>Solar Panel</span></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="group">
+            <label>Additional Notes</label>
+            <textarea name="Message" rows="3" placeholder="Any special requirements..."></textarea>
+        </div>
+
         <button type="submit">SUBMIT ORDER REQUEST</button>
         <p class="footer-note">AprilSmart ® Customized Shading Solutions</p>
     </form>
 </div>
 
+<div id="modal" onclick="this.style.display='none'">
+    <img id="modal-img" src="">
+</div>
+
+<script>
+    const fabricData = {
+        blackout: [
+            { name: "Bermuda White", img: "https://placehold.co/200x150?text=Bermuda+White" },
+            { name: "Bermuda Grey", img: "https://placehold.co/200x150?text=Bermuda+Grey" },
+            { name: "Bermuda Black", img: "https://placehold.co/200x150?text=Bermuda+Black" },
+            { name: "Bermuda Yellow", img: "https://placehold.co/200x150?text=Bermuda+Yellow" },
+            { name: "Bermuda Grey 2", img: "https://placehold.co/200x150?text=Bermuda+Grey+2" },
+            { name: "Bermuda Black 2", img: "https://placehold.co/200x150?text=Bermuda+Black+2" },
+            { name: "Style 7", img: "https://placehold.co/200x150?text=Style+7" },
+            { name: "Style 8", img: "https://placehold.co/200x150?text=Style+8" }
+        ],
+        filtering: [{ name: "Light Filter 1", img: "https://placehold.co/200x150?text=filtering+Style+1" }],
+        zebra: [{ name: "Classic Zebra", img: "https://placehold.co/200x150?text=Classic+Zebra" }],
+        cellular: [{ name: "Day/Night Cell", img: "https://placehold.co/200x150?text=Cellular+Style+1" }],
+        roman: [{ name: "Roman Style 1", img: "https://placehold.co/200x150?text=roman+Style+1" }],
+        woven: [{ name: "Woven Wood 1", img: "https://placehold.co/200x150?text=woven+Style+1" }],
+        outdoor: [{ name: "Outdoor Pro 1", img: "https://placehold.co/200x150?text=outdoor+Style+1" }]
+    };
+
+    function updateFabricList() {
+        const category = document.getElementById('fabricCategory').value;
+        const grid = document.getElementById('fabricGrid');
+        const section = document.getElementById('fabricDetailSection');
+        grid.innerHTML = ''; 
+        if (category && fabricData[category]) {
+            section.style.display = 'block';
+            fabricData[category].forEach((item) => {
+                const div = document.createElement('label');
+                div.className = 'grid-item';
+                div.innerHTML = `
+                    <input type="radio" name="Fabric_Style" value="${item.name}" required>
+                    <div class="item-ui"></div>
+                    <img src="${item.img}" onclick="zoomImg(this.src)" alt="${item.name}">
+                    <span>${item.name}</span>`;
+                grid.appendChild(div);
+            });
+        } else { section.style.display = 'none'; }
+    }
+
+    // 必选配件校验逻辑
+    function validateForm() {
+        const cables = document.querySelectorAll('.cable-group');
+        let checked = false;
+        cables.forEach(c => { if(c.checked) checked = true; });
+        if(!checked) {
+            alert("Please select at least one: Charger Cable or Magnetic Cable.");
+            return false;
+        }
+        return true;
+    }
+
+    function zoomImg(src) {
+        try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
+        document.getElementById('modal-img').src = src;
+        document.getElementById('modal').style.display = 'flex';
+    }
+</script>
+
 </body>
-
 </html>
-
