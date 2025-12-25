@@ -21,7 +21,7 @@
         .mount-card input:checked ~ .card-ui { border: 2px solid #000; position: absolute; top:0; left:0; right:0; bottom:0; border-radius: 6px; }
         .mount-img { width: 100%; border-radius: 4px; margin-bottom: 10px; cursor: zoom-in; }
         
-        /* --- 通用滚动条样式容器 --- */
+        /* --- 修正：删除横向滚动条 --- */
         .options-scroll-box { 
             margin-top: 10px; 
             padding: 15px;
@@ -30,9 +30,9 @@
             border-radius: 8px;
             max-height: 400px; 
             overflow-y: auto; 
+            overflow-x: hidden; /* 禁止横向滚动 */
         }
 
-        /* 滚动条美化 */
         .options-scroll-box::-webkit-scrollbar { width: 6px; }
         .options-scroll-box::-webkit-scrollbar-track { background: #f1f1f1; }
         .options-scroll-box::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
@@ -42,24 +42,40 @@
         .grid-item { border: 1px solid #eee; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; background: #fff; }
         .grid-item:hover { border-color: #999; }
         .grid-item img { width: 100%; height: 100px; object-fit: cover; border-radius: 4px; margin-bottom: 8px; cursor: zoom-in; }
-        .grid-item span { font-size: 11px; color: #333; display: block; line-height: 1.2; }
         
-        /* 选中逻辑样式 */
+        /* --- 修正：稳定预览，彻底防止闪烁 --- */
+        /* 1. 只有当鼠标直接在图片上时才悬浮预览 */
+        /* 2. 增加预览图尺寸并确保 pointer-events 穿透 */
+        .grid-item img:hover, .mount-img:hover {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px !important;    /* 稍微放大点方便看清楚 */
+            height: auto !important;
+            z-index: 10000;
+            box-shadow: 0 0 80px rgba(0,0,0,0.8);
+            border: 10px solid #fff;
+            border-radius: 8px;
+            object-fit: contain;
+            pointer-events: none;       /* 核心：让鼠标能“看穿”大图，防止大图挡住鼠标导致闪烁 */
+            background-color: #fff;
+        }
+        /* --------------------------------- */
+
+        .grid-item span { font-size: 11px; color: #333; display: block; line-height: 1.2; }
         .grid-item input { position: absolute; opacity: 0; }
         .grid-item input:checked + .item-ui { border: 2.5px solid #000; position: absolute; top:0; left:0; right:0; bottom:0; border-radius: 6px; }
 
-        /* 图片预览 Modal */
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; cursor: zoom-out; }
         #modal img { max-width: 90%; max-height: 90%; border-radius: 5px; }
 
         button { width: 100%; padding: 16px; background: #000; color: #fff; border: none; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 20px; }
         .footer-note { font-size: 12px; color: #999; text-align: center; margin-top: 20px; }
         
-        /* 特定板块样式微调 */
         #fabricDetailSection { display: none; }
         .must-pick-note { font-size: 11px; color: #e74c3c; font-weight: normal; text-transform: none; margin-left: 5px; }
 
-        /* 紧凑型板块样式（用于 Roll Position 和 Motor Side） */
         .compact-selection { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .compact-selection .grid-item img { height: 80px; }
     </style>
@@ -165,9 +181,9 @@
             <label>Motor Type</label>
             <div class="options-scroll-box">
                 <div class="selection-grid">
-                    <label class="grid-item"><input type="radio" name="Motor_Type" value="Standard Motor" checked><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Standard+Motor" onclick="zoomImg(this.src)"><span>Standard Motor</span></label>
-                    <label class="grid-item"><input type="radio" name="Motor_Type" value="Standard Motor+HUB"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Motor+HUB" onclick="zoomImg(this.src)"><span>Standard Motor+HUB</span></label>
-                    <label class="grid-item"><input type="radio" name="Motor_Type" value="MATTER Motor Over Thread"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=MATTER+Motor" onclick="zoomImg(this.src)"><span>MATTER Motor (homekit)</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Type" value="Standard Motor" checked><div class="item-ui"></div><img src="image/Standard Motor.png" onclick="zoomImg(this.src)"><span>Standard Motor</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Type" value="Standard Motor+HUB"><div class="item-ui"></div><img src="image/Standard Motor+HUB.png" onclick="zoomImg(this.src)"><span>Standard Motor+HUB</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Type" value="MATTER Motor Over Thread"><div class="item-ui"></div><img src="image/MATTER Motor Over Thread(homekit).png" onclick="zoomImg(this.src)"><span>MATTER Motor (homekit)</span></label>
                 </div>
             </div>
         </div>
@@ -176,13 +192,16 @@
             <label>Valance & Rod Options</label>
             <div class="options-scroll-box">
                 <div class="selection-grid">
-                    <label class="grid-item"><input type="radio" name="Valance" value="White Square Valance" checked><div class="item-ui"></div><img src="https://placehold.co/200x150?text=White+Valance" onclick="zoomImg(this.src)"><span>With Square Valance - White</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Black Square Valance"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Black+Valance" onclick="zoomImg(this.src)"><span>With Square Valance - Black</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Tonal Valance Fabric Insert"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Tonal+Valance" onclick="zoomImg(this.src)"><span>Tonal Valance With Fabric Inserts</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Standard Bottom Rod"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Std+Rod" onclick="zoomImg(this.src)"><span>Standard Bottom Rod</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Fabric Wrapped Rod"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Wrapped+Rod" onclick="zoomImg(this.src)"><span>Fabric Wrapped Bottom Rod</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="White Square Rod"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=White+Rod" onclick="zoomImg(this.src)"><span>Square Bottom Rod - White</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Black Square Rod"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Black+Rod" onclick="zoomImg(this.src)"><span>Square Bottom Rod - Black</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="White Square Valance" checked><div class="item-ui"></div><img src="image/With Square Valance-White.png" onclick="zoomImg(this.src)"><span>With Square Valance - White</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Black Square Valance"><div class="item-ui"></div><img 
+src="image/With Square Valance-Black.png" onclick="zoomImg(this.src)"><span>With Square Valance - Black</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Tonal Valance Fabric Insert"><div class="item-ui"></div><img src="image/Tonal Valance With Fabric Inserts.png" onclick="zoomImg(this.src)"><span>Tonal Valance With Fabric Inserts</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Standard Bottom Rod"><div class="item-ui"></div><img src="image/Standard Bottom Rod.png" onclick="zoomImg(this.src)"><span>Standard Bottom Rod</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Fabric Wrapped Rod"><div class="item-ui"></div><img src="image/Fabric Wrapped Bottom Rod.png" onclick="zoomImg(this.src)"><span>Fabric Wrapped Bottom Rod</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="White Square Rod"><div class="item-ui"></div><img 
+src="image/Square Bottom Rod-White.png" onclick="zoomImg(this.src)"><span>Square Bottom Rod - White</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance" value="Black Square Rod"><div class="item-ui"></div><img 
+src="image/Square Bottom Rod-Black.png" onclick="zoomImg(this.src)"><span>Square Bottom Rod - Black</span></label>
                 </div>
             </div>
         </div>
@@ -191,15 +210,17 @@
             <div style="flex:1;">
                 <label>Roll Position</label>
                 <div class="compact-selection">
-                    <label class="grid-item"><input type="radio" name="Roll_Position" value="Standard Roll" checked><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Standard" onclick="zoomImg(this.src)"><span>Standard Roll</span></label>
-                    <label class="grid-item"><input type="radio" name="Roll_Position" value="Reverse Roll"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Reverse" onclick="zoomImg(this.src)"><span>Reverse Roll</span></label>
+                    <label class="grid-item"><input type="radio" name="Roll_Position" value="Standard Roll" checked><div class="item-ui"></div><img src="image/Standard Roll.png" onclick="zoomImg(this.src)"><span>Standard Roll</span></label>
+                    <label class="grid-item"><input type="radio" name="Roll_Position" value="Reverse Roll"><div class="item-ui"></div><img 
+src="image/Reverse Roll.png" onclick="zoomImg(this.src)"><span>Reverse Roll</span></label>
                 </div>
             </div>
             <div style="flex:1;">
                 <label>Motor Side</label>
                 <div class="compact-selection">
-                    <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Left" checked><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Left" onclick="zoomImg(this.src)"><span>Motor-Left</span></label>
-                    <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Right"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Right" onclick="zoomImg(this.src)"><span>Motor-Right</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Left" checked><div class="item-ui"></div><img src="image/Left side.png" onclick="zoomImg(this.src)"><span>Motor-Left</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Right"><div class="item-ui"></div><img 
+src="image/Right side.png" onclick="zoomImg(this.src)"><span>Motor-Right</span></label>
                 </div>
             </div>
         </div>
@@ -208,18 +229,23 @@
             <label>Other accessories <span class="must-pick-note">(Required: pick Charger or Magnetic Cable)</span></label>
             <div class="options-scroll-box">
                 <div class="selection-grid" id="accGrid">
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="1-ch remote"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=1-ch" onclick="zoomImg(this.src)"><span>1-channels remote</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="15-ch remote"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=15-ch" onclick="zoomImg(this.src)"><span>15-channels remote</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Block"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Block" onclick="zoomImg(this.src)"><span>Charger Block</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="1-ch remote"><div class="item-ui"></div><img 
+src="image/1-Channel Remote Control.png" onclick="zoomImg(this.src)"><span>1-channels remote</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="15-ch remote"><div class="item-ui"></div><img 
+src="image/15-Channel Remote Control.png" onclick="zoomImg(this.src)"><span>15-channels remote</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Block"><div class="item-ui"></div><img 
+src="image/Charger Block.png" onclick="zoomImg(this.src)"><span>Charger Block</span></label>
                     
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Cable" class="cable-group"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Charger+Cable" onclick="zoomImg(this.src)"><span>Charger Cable</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Magnetic Cable" class="cable-group"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Magnetic+Cable" onclick="zoomImg(this.src)"><span>Magnetic Cable</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Cable" class="cable-group"><div class="item-ui"></div><img src="image/Charger Cable.png" onclick="zoomImg(this.src)"><span>Charger Cable</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Magnetic Cable" class="cable-group"><div class="item-ui"></div><img src="image/Magnetic Cable.png" onclick="zoomImg(this.src)"><span>Magnetic Cable</span></label>
                     
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-White"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Blocker+W" onclick="zoomImg(this.src)"><span>Light Blockers - White</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-Black"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Blocker+B" onclick="zoomImg(this.src)"><span>Light Blockers - Black</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-White"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Rail+W" onclick="zoomImg(this.src)"><span>Side Rail Track-White</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-Black"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Rail+B" onclick="zoomImg(this.src)"><span>Side Rail Track-Black</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Solar Panel"><div class="item-ui"></div><img src="https://placehold.co/200x150?text=Solar" onclick="zoomImg(this.src)"><span>Solar Panel</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-White"><div class="item-ui"></div><img 
+src="image/Light Blockers-White.png" onclick="zoomImg(this.src)"><span>Light Blockers - White</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-Black"><div class="item-ui"></div><img src="image/Light Blockers-Black.png" onclick="zoomImg(this.src)"><span>Light Blockers - Black</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-White"><div class="item-ui"></div><img src="image/Side Rail Track-White.png" onclick="zoomImg(this.src)"><span>Side Rail Track-White</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-Black"><div class="item-ui"></div><img src="image/Side Rail Track-Black.png" onclick="zoomImg(this.src)"><span>Side Rail Track-Black</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Solar Panel"><div class="item-ui"></div><img 
+src="image/Solar Panel.png" onclick="zoomImg(this.src)"><span>Solar Panel</span></label>
                 </div>
             </div>
         </div>
@@ -278,7 +304,6 @@
         } else { section.style.display = 'none'; }
     }
 
-    // 必选配件校验逻辑
     function validateForm() {
         const cables = document.querySelectorAll('.cable-group');
         let checked = false;
