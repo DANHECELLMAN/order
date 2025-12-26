@@ -4,106 +4,179 @@
     <meta charset="UTF-8">
     <title>AprilSmart | China Custom Motorized Blinds Order Form</title>
     <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f4f4f4; padding: 40px 20px; }
-        .form-container { max-width: 700px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-        h2 { text-align: center; font-weight: 300; letter-spacing: 1px; margin-bottom: 30px; color: #000; }
-        .group { margin-bottom: 25px; }
-        label { display: block; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; color: #666; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 4px; box-sizing: border-box; background: #fafafa; font-size: 14px; }
+        /* 引入现代字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --brand-black: #1a1a1a;
+            --brand-accent: #2c3e50;
+            --bg-color: #f8fafc;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --highlight-gold: #fffbeb; 
+            --error-red: #ef4444;
+        }
+
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            background: var(--bg-color); 
+            padding: 60px 20px; 
+            color: var(--brand-black);
+            line-height: 1.5;
+        }
+
+        .form-container { 
+            max-width: 800px; 
+            margin: auto; 
+            background: ＃FFFFE0; 
+            padding: 50px; 
+            border-radius: 24px; 
+            box-shadow: var(--card-shadow); 
+        }
+
+        h2 { 
+            text-align: center; 
+            font-weight: 700; 
+            letter-spacing: -0.025em; 
+            margin-bottom: 40px; 
+            color: var(--brand-black);
+            font-size: 28px;
+            text-transform: uppercase;
+        }
+
+        .group { 
+            margin-bottom: 35px; 
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
         
-        .row { display: flex; gap: 15px; margin-bottom: 10px; }
+        /* --- 面料板块样式 --- */
+        .fabric-priority-group {
+            background: #fff;
+            border: 2px solid #1a1a1a;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            position: relative;
+            transition: var(--transition);
+        }
+        .fabric-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .status-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .status-required { background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; }
+        .status-ok { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
+
+        .fabric-category-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .category-card {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #fff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .category-card:hover { border-color: #94a3b8; }
+        .category-card input { position: absolute; opacity: 0; }
+        .category-card .icon { font-size: 20px; margin-bottom: 5px; }
+        .category-card span { font-size: 11px; font-weight: 700; color: #475569; line-height: 1.2; }
+        
+        .category-card input:checked + .cat-ui {
+            border: 2px solid var(--brand-black);
+            position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.02);
+        }
+        .category-card input:checked ~ span { color: var(--brand-black); }
+
+        /* 以下保留所有原有样式 */
+        .group:last-of-type { border-bottom: none; }
+        label { display: block; margin-bottom: 12px; font-size: 12px; text-transform: uppercase; color: #64748b; font-weight: 700; letter-spacing: 0.1em; }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea { 
+            width: 100%; padding: 14px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; background: #fff; font-size: 15px; transition: var(--transition);
+        }
+        input:focus, select:focus { border-color: var(--brand-black); outline: none; box-shadow: 0 0 0 4px rgba(0,0,0,0.05); }
+        .row { display: flex; gap: 20px; margin-bottom: 15px; }
         .row div { flex: 1; }
-
-        /* 安装卡片样式 */
-        .mount-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .mount-card { border: 2px solid #eee; border-radius: 8px; padding: 15px; cursor: pointer; transition: 0.3s; position: relative; }
+        .mount-options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .mount-card { border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 20px; cursor: pointer; transition: var(--transition); position: relative; background: #fff; }
+        .mount-card:hover { border-color: #cbd5e1; transform: translateY(-2px); }
         .mount-card input { position: absolute; opacity: 0; }
-        .mount-card input:checked ~ .card-ui { border: 2px solid #000; position: absolute; top:0; left:0; right:0; bottom:0; border-radius: 6px; }
-        .mount-img { width: 100%; border-radius: 4px; margin-bottom: 10px; cursor: zoom-in; }
-        
-        /* --- 修正：删除横向滚动条 --- */
-        .options-scroll-box { 
-            margin-top: 10px; 
-            padding: 15px;
-            background: #f9f9f9;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            max-height: 400px; 
-            overflow-y: auto; 
-            overflow-x: hidden; /* 禁止横向滚动 */
-        }
-
-        .options-scroll-box::-webkit-scrollbar { width: 6px; }
-        .options-scroll-box::-webkit-scrollbar-track { background: #f1f1f1; }
-        .options-scroll-box::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
-
-        /* 通用网格布局 */
-        .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
-        .grid-item { border: 1px solid #eee; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; background: #fff; }
-        .grid-item:hover { border-color: #999; }
-        .grid-item img { width: 100%; height: 100px; object-fit: cover; border-radius: 4px; margin-bottom: 8px; cursor: zoom-in; }
-        
-        /* --- 修正：稳定预览，彻底防止闪烁 --- */
-        /* 1. 只有当鼠标直接在图片上时才悬浮预览 */
-        /* 2. 增加预览图尺寸并确保 pointer-events 穿透 */
-        .grid-item img:hover, .mount-img:hover {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px !important;    /* 稍微放大点方便看清楚 */
-            height: auto !important;
-            z-index: 10000;
-            box-shadow: 0 0 80px rgba(0,0,0,0.8);
-            border: 10px solid #fff;
-            border-radius: 8px;
-            object-fit: contain;
-            pointer-events: none;       /* 核心：让鼠标能“看穿”大图，防止大图挡住鼠标导致闪烁 */
-            background-color: #fff;
-        }
-        /* --------------------------------- */
-
-        .grid-item span { font-size: 11px; color: #333; display: block; line-height: 1.2; }
+        .mount-card input:checked ~ .card-ui { border: 2px solid var(--brand-black); position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .mount-img { width: 100%; border-radius: 8px; margin-bottom: 12px; cursor: zoom-in; transition: transform 0.3s ease; }
+        .mount-img:hover { transform: scale(1.05); }
+        .options-scroll-box { margin-top: 15px; padding: 20px; background: #f8fafc; border: 1.5px solid #f1f5f9; border-radius: 16px; max-height: 420px; overflow-y: auto; position: relative; }
+        .options-scroll-box::-webkit-scrollbar { width: 5px; }
+        .options-scroll-box::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .grid-item { border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: var(--transition); position: relative; background: #fff; }
+        .grid-item:hover { border-color: #94a3b8; transform: translateY(-2px); }
+        .grid-item img { width: 100%; height: 110px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; cursor: zoom-in; transition: transform 0.3s ease; }
+        .grid-item img:hover { transform: scale(1.05); }
+        .grid-item span { font-size: 12px; color: #1e293b; font-weight: 600; display: block; padding-top: 5px; }
         .grid-item input { position: absolute; opacity: 0; }
-        .grid-item input:checked + .item-ui { border: 2.5px solid #000; position: absolute; top:0; left:0; right:0; bottom:0; border-radius: 6px; }
-
-        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; cursor: zoom-out; }
-        #modal img { max-width: 90%; max-height: 90%; border-radius: 5px; }
-
-        button { width: 100%; padding: 16px; background: #000; color: #fff; border: none; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .footer-note { font-size: 12px; color: #999; text-align: center; margin-top: 20px; }
-        
-        #fabricDetailSection { display: none; }
-        .must-pick-note { font-size: 11px; color: #e74c3c; font-weight: normal; text-transform: none; margin-left: 5px; }
-
-        .compact-selection { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .compact-selection .grid-item img { height: 80px; }
+        .grid-item input:checked + .item-ui { border: 2.5px solid var(--brand-black); position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px; border-radius: 12px; background: rgba(0,0,0,0.02); }
+        .selected-summary { margin-top: 20px; padding: 15px; background: #fff; border: 1.5px dashed #e2e8f0; border-radius: 12px; font-size: 13px; }
+        .summary-tag { display: inline-block; background: var(--brand-black); color: #fff; padding: 4px 12px; margin: 3px; border-radius: 20px; font-weight: 500; }
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(8px); cursor: zoom-out; }
+        #modal-img { max-width: 90%; max-height: 85%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); border: 4px solid #fff; object-fit: contain; }
+        button[type="submit"] { width: 100%; padding: 18px; background: var(--brand-black); color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 30px; transition: var(--transition); letter-spacing: 1px; }
+        button[type="submit"]:hover { background: #333; transform: scale(1.02); }
+        .btn-clear { background: #f1f5f9; color: #475569; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; transition: var(--transition); border: none; cursor: pointer; }
+        .btn-clear:hover { background: #e2e8f0; color: #0f172a; }
+        .must-pick-note { color: #ef4444; font-weight: 500; font-size: 12px; }
+        .compact-selection { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .footer-note { font-size: 13px; color: #94a3b8; text-align: center; margin-top: 30px; font-weight: 500; }
     </style>
 </head>
 <body>
 
 <div class="form-container">
-    <h2>CUSTOM ORDER FORM</h2>
+    <h2>AprilSmart Custom Order</h2>
     <form action="https://formspree.io/f/xdanvzbn" method="POST" onsubmit="return validateForm()">
         
         <div class="group">
             <label>Full Name / 姓名</label>
-            <input type="text" name="Customer Name" required>
+            <input type="text" name="Customer Name" placeholder="Enter your full name" required>
         </div>
 
         <div class="group">
             <label>Email / 邮箱</label>
-            <input type="email" name="_replyto" required>
+            <input type="email" name="_replyto" placeholder="yourname@email.com" required>
+        </div>
+
+        <div class="group">
+            <label>Contract Number / 联系电话</label>
+            <input type="tel" name="Phone_Number" placeholder="+1 (000) 000-0000" required>
         </div>
 
         <div class="row">
             <div>
                 <label>Width / 宽度 (Whole)</label>
-                <input type="number" name="Width_Base" required>
+                <input type="number" name="Width_Base" placeholder="Inches" required>
             </div>
             <div>
                 <label>Height / 高度 (Whole)</label>
-                <input type="number" name="Height_Base" required>
+                <input type="number" name="Height_Base" placeholder="Inches" required>
             </div>
         </div>
 
@@ -137,14 +210,14 @@
         </div>
 
         <div class="group">
-            <label>Mount Type / 安装方式</label>
+            <label>Mount Type / 安装方式 (Click to Zoom)</label>
             <div class="mount-options">
                 <label class="mount-card">
                     <input type="radio" name="Mount_Type" value="Inside Mount" checked>
                     <div class="card-ui"></div>
                     <div class="card-content">
                         <img src="image/inside.png" class="mount-img" onclick="zoomImg(this.src)" alt="Inside">
-                        <div style="font-size:11px;"><b>INSIDE MOUNT</b><br>W=Order W, H=Order H<br>Depth≥2"</div>
+                        <div style="font-size:11px; color:#475569;"><b>INSIDE MOUNT</b><br>W=Order W, H=Order H<br>Depth≥2"</div>
                     </div>
                 </label>
                 <label class="mount-card">
@@ -152,27 +225,69 @@
                     <div class="card-ui"></div>
                     <div class="card-content">
                         <img src="image/outside.png" class="mount-img" onclick="zoomImg(this.src)" alt="Outside">
-                        <div style="font-size:11px;"><b>OUTSIDE MOUNT</b><br>W=Win+6", H=Win+6"<br>*Best for Blackout</div>
+                        <div style="font-size:11px; color:#475569;"><b>OUTSIDE MOUNT</b><br>W=Win+6", H=Win+6"<br>*Best for Blackout</div>
                     </div>
                 </label>
             </div>
         </div>
 
-        <div class="group">
-            <label>Fabric Category / 面料大类</label>
-            <select id="fabricCategory" name="Fabric_Category" onchange="updateFabricList()">
-                <option value="">请选择系列 / Select Series...</option>
-                <option value="blackout">100% Blackout Roller Shades (27款)</option>
-                <option value="filtering">Light Filtering Roller Shades (25款)</option>
-                <option value="zebra">Zebra Shades (12款)</option>
-                <option value="cellular">Cellular Shades (20款)</option>
-                <option value="roman">Roman Shades (24款)</option>
-                <option value="woven">Woven Wood Shades (28款)</option>
-                <option value="outdoor">Outdoor Shades (16款)</option>
-            </select>
+        <div class="group fabric-priority-group" id="fabricSection">
+            <div class="fabric-title-bar">
+                <label style="margin-bottom:0">Step 1: Choose Fabric Category / 面料大类</label>
+                <span id="fabricStatus" class="status-badge status-required">Required / 必选</span>
+            </div>
+            
+            <div class="fabric-category-selector">
+                <label class="category-card">
+                    <input type="radio" name="Fabric_Category" value="blackout" onchange="updateFabricList()">
+                    <div class="cat-ui"></div>
+                    <span class="icon">🌑</span>
+                    <span>100% Blackout</span>
+                </label>
+                <label class="category-card">
+                    <input type="radio" name="Fabric_Category" value="filtering" onchange="updateFabricList()">
+                    <div class="cat-ui"></div>
+                    <span class="icon">🌗</span>
+                    <span>Light Filtering</span>
+                </label>
+                <label class="category-card">
+                    <input type="radio" name="Fabric_Category" value="zebra" onchange="updateFabricList()">
+                    <div class="cat-ui"></div>
+                    <span class="icon">🦓</span>
+                    <span>Zebra Shades</span>
+                </label>
+                <label class="category-card">
+                    <input type="radio" name="Fabric_Category" value="cellular" onchange="updateFabricList()">
+                    <div class="cat-ui"></div>
+                    <span class="icon">🐝</span>
+                    <span>Cellular Shades</span>
+                </label>
+                <label class="category-card">
+                    <input type="radio" name="Fabric_Category" value="roman" onchange="updateFabricList()">
+                    <div class="cat-ui"></div>
+                    <span class="icon">📜</span>
+                    <span>Roman Shades</span>
+                </label>
+                <label class="category-card">
+                    <input type="radio" name="Fabric_Category" value="woven" onchange="updateFabricList()">
+                    <div class="cat-ui"></div>
+                    <span class="icon">🪵</span>
+                    <span>Woven Wood</span>
+                </label>
+            </div>
 
-            <div id="fabricDetailSection" class="options-scroll-box">
-                <label>Select Style / 选择款式</label>
+            <div id="persistentSummary" style="display:none; margin-bottom:15px; border-top:1px solid #f1f5f9; padding-top:15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <label style="margin-bottom:0">Selected Styles / 已选样式</label>
+                    <button type="button" class="btn-clear" onclick="clearFabrics()">Clear All</button>
+                </div>
+                <div id="selectedSummary" class="selected-summary" style="margin-top:0; background:#f8fafc;">Selected: (None)</div>
+            </div>
+
+            <div id="fabricDetailSection" class="options-scroll-box" style="display:none; background: #fff;">
+                <div class="fabric-header" style="margin-bottom:10px;">
+                    <label style="margin-bottom:0">Step 2: Select Styles / 选择具体花色</label>
+                </div>
                 <div id="fabricGrid" class="selection-grid"></div>
             </div>
         </div>
@@ -189,19 +304,24 @@
         </div>
 
         <div class="group">
-            <label>Valance & Rod Options</label>
+            <label>Valance Options / 罩壳选择</label>
             <div class="options-scroll-box">
                 <div class="selection-grid">
-                    <label class="grid-item"><input type="radio" name="Valance" value="White Square Valance" checked><div class="item-ui"></div><img src="image/With Square Valance-White.png" onclick="zoomImg(this.src)"><span>With Square Valance - White</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Black Square Valance"><div class="item-ui"></div><img 
-src="image/With Square Valance-Black.png" onclick="zoomImg(this.src)"><span>With Square Valance - Black</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Tonal Valance Fabric Insert"><div class="item-ui"></div><img src="image/Tonal Valance With Fabric Inserts.png" onclick="zoomImg(this.src)"><span>Tonal Valance With Fabric Inserts</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Standard Bottom Rod"><div class="item-ui"></div><img src="image/Standard Bottom Rod.png" onclick="zoomImg(this.src)"><span>Standard Bottom Rod</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Fabric Wrapped Rod"><div class="item-ui"></div><img src="image/Fabric Wrapped Bottom Rod.png" onclick="zoomImg(this.src)"><span>Fabric Wrapped Bottom Rod</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="White Square Rod"><div class="item-ui"></div><img 
-src="image/Square Bottom Rod-White.png" onclick="zoomImg(this.src)"><span>Square Bottom Rod - White</span></label>
-                    <label class="grid-item"><input type="radio" name="Valance" value="Black Square Rod"><div class="item-ui"></div><img 
-src="image/Square Bottom Rod-Black.png" onclick="zoomImg(this.src)"><span>Square Bottom Rod - Black</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance_Option" value="White Square Valance" checked><div class="item-ui"></div><img src="image/With Square Valance-White.png" onclick="zoomImg(this.src)"><span>White Square Valance</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance_Option" value="Black Square Valance"><div class="item-ui"></div><img src="image/With Square Valance-Black.png" onclick="zoomImg(this.src)"><span>Black Square Valance</span></label>
+                    <label class="grid-item"><input type="radio" name="Valance_Option" value="Tonal Valance Fabric Insert"><div class="item-ui"></div><img src="image/Tonal Valance With Fabric Inserts.png" onclick="zoomImg(this.src)"><span>Tonal Valance Fabric Insert</span></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="group">
+            <label>Bottom Rod Options / 底杆选择</label>
+            <div class="options-scroll-box">
+                <div class="selection-grid">
+                    <label class="grid-item"><input type="radio" name="Rod_Option" value="Standard Bottom Rod" checked><div class="item-ui"></div><img src="image/Standard Bottom Rod.png" onclick="zoomImg(this.src)"><span>Standard Bottom Rod</span></label>
+                    <label class="grid-item"><input type="radio" name="Rod_Option" value="Fabric Wrapped Rod"><div class="item-ui"></div><img src="image/Fabric Wrapped Bottom Rod.png" onclick="zoomImg(this.src)"><span>Fabric Wrapped Rod</span></label>
+                    <label class="grid-item"><input type="radio" name="Rod_Option" value="White Square Rod"><div class="item-ui"></div><img src="image/Square Bottom Rod-White.png" onclick="zoomImg(this.src)"><span>Square Rod - White</span></label>
+                    <label class="grid-item"><input type="radio" name="Rod_Option" value="Black Square Rod"><div class="item-ui"></div><img src="image/Square Bottom Rod-Black.png" onclick="zoomImg(this.src)"><span>Square Rod - Black</span></label>
                 </div>
             </div>
         </div>
@@ -211,48 +331,39 @@ src="image/Square Bottom Rod-Black.png" onclick="zoomImg(this.src)"><span>Square
                 <label>Roll Position</label>
                 <div class="compact-selection">
                     <label class="grid-item"><input type="radio" name="Roll_Position" value="Standard Roll" checked><div class="item-ui"></div><img src="image/Standard Roll.png" onclick="zoomImg(this.src)"><span>Standard Roll</span></label>
-                    <label class="grid-item"><input type="radio" name="Roll_Position" value="Reverse Roll"><div class="item-ui"></div><img 
-src="image/Reverse Roll.png" onclick="zoomImg(this.src)"><span>Reverse Roll</span></label>
+                    <label class="grid-item"><input type="radio" name="Roll_Position" value="Reverse Roll"><div class="item-ui"></div><img src="image/Reverse Roll.png" onclick="zoomImg(this.src)"><span>Reverse Roll</span></label>
                 </div>
             </div>
             <div style="flex:1;">
                 <label>Motor Side</label>
                 <div class="compact-selection">
                     <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Left" checked><div class="item-ui"></div><img src="image/Left side.png" onclick="zoomImg(this.src)"><span>Motor-Left</span></label>
-                    <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Right"><div class="item-ui"></div><img 
-src="image/Right side.png" onclick="zoomImg(this.src)"><span>Motor-Right</span></label>
+                    <label class="grid-item"><input type="radio" name="Motor_Side" value="Motor-Right"><div class="item-ui"></div><img src="image/Right side.png" onclick="zoomImg(this.src)"><span>Motor-Right</span></label>
                 </div>
             </div>
         </div>
 
         <div class="group">
-            <label>Other accessories <span class="must-pick-note">(Required: pick Charger or Magnetic Cable)</span></label>
+            <label>Other accessories <span class="must-pick-note">(Pick Charger or Magnetic Cable)</span></label>
             <div class="options-scroll-box">
                 <div class="selection-grid" id="accGrid">
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="1-ch remote"><div class="item-ui"></div><img 
-src="image/1-Channel Remote Control.png" onclick="zoomImg(this.src)"><span>1-channels remote</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="15-ch remote"><div class="item-ui"></div><img 
-src="image/15-Channel Remote Control.png" onclick="zoomImg(this.src)"><span>15-channels remote</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Block"><div class="item-ui"></div><img 
-src="image/Charger Block.png" onclick="zoomImg(this.src)"><span>Charger Block</span></label>
-                    
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="1-ch remote"><div class="item-ui"></div><img src="image/1-Channel Remote Control.png" onclick="zoomImg(this.src)"><span>1-ch Remote</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="15-ch remote"><div class="item-ui"></div><img src="image/15-Channel Remote Control.png" onclick="zoomImg(this.src)"><span>15-ch Remote</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Block"><div class="item-ui"></div><img src="image/Charger Block.png" onclick="zoomImg(this.src)"><span>Charger Block</span></label>
                     <label class="grid-item"><input type="checkbox" name="Accessories" value="Charger Cable" class="cable-group"><div class="item-ui"></div><img src="image/Charger Cable.png" onclick="zoomImg(this.src)"><span>Charger Cable</span></label>
                     <label class="grid-item"><input type="checkbox" name="Accessories" value="Magnetic Cable" class="cable-group"><div class="item-ui"></div><img src="image/Magnetic Cable.png" onclick="zoomImg(this.src)"><span>Magnetic Cable</span></label>
-                    
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-White"><div class="item-ui"></div><img 
-src="image/Light Blockers-White.png" onclick="zoomImg(this.src)"><span>Light Blockers - White</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-Black"><div class="item-ui"></div><img src="image/Light Blockers-Black.png" onclick="zoomImg(this.src)"><span>Light Blockers - Black</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-White"><div class="item-ui"></div><img src="image/Side Rail Track-White.png" onclick="zoomImg(this.src)"><span>Side Rail Track-White</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-Black"><div class="item-ui"></div><img src="image/Side Rail Track-Black.png" onclick="zoomImg(this.src)"><span>Side Rail Track-Black</span></label>
-                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Solar Panel"><div class="item-ui"></div><img 
-src="image/Solar Panel.png" onclick="zoomImg(this.src)"><span>Solar Panel</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-White"><div class="item-ui"></div><img src="image/Light Blockers-White.png" onclick="zoomImg(this.src)"><span>Blockers-White</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Light Blockers-Black"><div class="item-ui"></div><img src="image/Light Blockers-Black.png" onclick="zoomImg(this.src)"><span>Blockers-Black</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-White"><div class="item-ui"></div><img src="image/Side Rail Track-White.png" onclick="zoomImg(this.src)"><span>Rail-White</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Side Rail-Black"><div class="item-ui"></div><img src="image/Side Rail Track-Black.png" onclick="zoomImg(this.src)"><span>Rail-Black</span></label>
+                    <label class="grid-item"><input type="checkbox" name="Accessories" value="Solar Panel"><div class="item-ui"></div><img src="image/Solar Panel.png" onclick="zoomImg(this.src)"><span>Solar Panel</span></label>
                 </div>
             </div>
         </div>
 
         <div class="group">
             <label>Additional Notes</label>
-            <textarea name="Message" rows="3" placeholder="Any special requirements..."></textarea>
+            <textarea name="Message" rows="4" placeholder="Share any special instructions here..."></textarea>
         </div>
 
         <button type="submit">SUBMIT ORDER REQUEST</button>
@@ -265,62 +376,226 @@ src="image/Solar Panel.png" onclick="zoomImg(this.src)"><span>Solar Panel</span>
 </div>
 
 <script>
+    // 1. 数据定义
+    const blackoutFiles = [
+        "Blackout_Baltimore Anthracite 25", "Blackout_Baltimore Bronze 26", "Blackout_Baltimore Flint 27",
+        "Blackout_Bermuda Basalt 24", "Blackout_Bermuda Platinum 22", "Blackout_Bermuda Toffee 23",
+        "Blackout_BouvardiaDark Grey 17", "Blackout_BouvardiaMedium Grey 18", "Blackout_Cream White 06",
+        "Blackout_Linen Stone 01", "Blackout_Linen Stone 02", "Blackout_Safari Cream 04",
+        "Blackout_Safari Midnight 05", "Blackout_Safari Stone 07", "Blackout_Safari White 03",
+        "Blackout_SafariBiscuit 20", "Blackout_SafariSmoke 19", "Blackout_Treebark Obsidian 28",
+        "Blackout_Treebark Extra White 29", "Blackout_Vigor Cream 08", "Blackout_Vigor Milky 11",
+        "Blackout_Vigor RockWhite 21", "Blackout_Vigor sage 10", "Blackout_Vigor Wheat 09",
+        "Blackout_Vinyl Beige 13", "Blackout_Vinyl Black 14", "Blackout_Vinyl Grey 16",
+        "Blackout_Vinyl White 12", "Blackout_Vinyl WhiteGrey-15"
+    ];
+    // 新增：Light Filtering 数据
+    const filteringFiles = [
+        "Light Filtering_5% OPENNESS AVENTUS BLACK 54", "Light Filtering_5% OPENNESS AVENTUS ICE 51",
+        "Light Filtering_5% OPENNESS AVENTUS WHITE GREY 53", "Light Filtering_5% OPENNESS AVENTUSWHITE LINEN 52",
+        "Light Filtering_50% SUNSCREEN BLACK 61", "Light Filtering_50% SUNSCREEN COCOA 60",
+        "Light Filtering_50% SUNSCREEN GREY 59", "Light Filtering_50% SUNSCREEN WHITE 58",
+        "Light Filtering_70% Bouvardia Cream 64", "Light Filtering_70% Bouvardia Dark Grey 66",
+        "Light Filtering_70% Bouvardia Medium Grey 65", "Light Filtering_70% ESSENTIAL CREAM-68",
+        "Light Filtering_70% ESSENTIAL GREY-69", "Light Filtering_70% ESSENTIALWHITE 55",
+        "Light Filtering_70% LINEN CARAM EL-67", "Light Filtering_70% LINEN SAND 57",
+        "Light Filtering_70% LINEN WHITE 36", "Light Filtering_70% SAFAR IVORY 63",
+        "Light Filtering_70% SAFARI WHITE 62", "Light Filtering_70% TREEBARK BLACK-75",
+        "Light Filtering_70% TREEBARK CREAM-71", "Light Filtering_70% TREEBARK GREY-73",
+        "Light Filtering_70% TREEBARK NAVY-72", "Light Filtering_70% TREEBARK SHALLOW-74",
+        "Light Filtering_70% TREEBARK WHITE-70"
+    ];
+    // 新增：Zebra Shades 数据
+    const zebraFiles = [
+        "Zebra_60% BLACK-34", "Zebra_60% GREY-32", "Zebra_60% NAVY-33", 
+        "Zebra_60% WHITE-31", "Zebra_70% LINEN-43", "Zebra_85% GREY-35", 
+        "Zebra_85% WAVE BLACK-37", "Zebra_85% WAVE GREY-36", "Zebra_100% BLUE-44", 
+        "Zebra_100% CHARCOAL-46", "Zebra_100% DARK GREY-41", "Zebra_100% MID GREY-40",
+        "Zebra_100% OLIVE-45", "Zebra_100% ROCK BLACK-42", "Zebra_100% WHITE STONE-38", 
+        "Zebra_100% WHITE-39"
+    ];
+    // 新增：Cellular Shades 数据
+    const cellularFiles = [
+        "Cellular_Blackout Blue 110", "Cellular_Blackout Brown 107", 
+        "Cellular_Blackout Grey 109", "Cellular_Blackout Prestige Black-118", 
+        "Cellular_Blackout Prestige Brown-119", "Cellular_Blackout Prestige Grey White-116", 
+        "Cellular_Blackout Prestige Grey-117", "Cellular_Blackout Prestige Linen-120", 
+        "Cellular_Blackout Toffe 108", "Cellular_Blackout White 106", 
+        "Cellular_Light Filtering Blue 105", "Cellular_Light Filtering Brown 102", 
+        "Cellular_Light Filtering Grey 104", "Cellular_Light Filtering Toffe 103", 
+        "Cellular_Light Filtering White 101"
+    ];
+    // 新增：Roman Shades 数据
+    const romanFiles = [
+        "Roman_50% Clio Sand-225", "Roman_50% CrossLoom Grey-223", 
+        "Roman_50% CrossLoom Sand-222", "Roman_50% CrossLoom White-221", 
+        "Roman_60% Clio Grey-226", "Roman_60% Clio Mixblack-227", 
+        "Roman_60% Clio White-224", "Roman_70% Essential Smoky-229", 
+        "Roman_70% Essential White-228", "Roman_70% Linen White-234", 
+        "Roman_70% Safari Biscuit-233", "Roman_70% Safari Cream-232", 
+        "Roman_70% Safari Grey-231", "Roman_70% Safari White-230", 
+        "Roman_100% Dream Feather Grey-241", "Roman_100% Dream Fog Mist-240", 
+        "Roman_100% Dream Grey-242", "Roman_100% Dream White-239", 
+        "Roman_100% Linen Stone-219", "Roman_100% Linen White-220", 
+        "Roman_100% Safari Biscuit-238", "Roman_100% Safari Cream-237", 
+        "Roman_100% Safari Grey-236", "Roman_100% Safari White-235"
+    ];
+    // 新增：Woven Wood 数据
+    const wovenFiles = [
+        "Woven_50% Bareloom Bamboo Fiber-326", "Woven_50% Bareloom Flax Bamboo-332", 
+        "Woven_50% Bareloom Flax Reed-333", "Woven_50% Bareloom Hemp-334", 
+        "Woven_50% Bareloom Jute Flax-321", "Woven_50% Bareloom Jute-322", 
+        "Woven_50% Bareloom Knaf-323", "Woven_50% Bareloom Rammus-325", 
+        "Woven_50% Bareloom Rammus-327", "Woven_50% Bareloom Rammus-328", 
+        "Woven_50% Bareloom Rammus-329", "Woven_50% Bareloom Rammus-330", 
+        "Woven_50% Bareloom Rammus-331", "Woven_50% Bareloom Red Knaf-324", 
+        "Woven_70% Bareloom Bamboo Fiber-326", "Woven_70% Bareloom Flax Bamboo-332", 
+        "Woven_70% Bareloom Flax Bamboo-333", "Woven_70% Bareloom Hemp-334", 
+        "Woven_70% Bareloom Jute Flax-321", "Woven_70% Bareloom Jute-322", 
+        "Woven_70% Bareloom Knaf-323", "Woven_70% Bareloom Rammus-325", 
+        "Woven_70% Bareloom Rammus-327", "Woven_70% Bareloom Rammus-328", 
+        "Woven_70% Bareloom Rammus-329", "Woven_70% Bareloom Rammus-330", 
+        "Woven_70% Bareloom Rammus-331", "Woven_70% Bareloom Red Knaf-324", 
+        "Woven_100% Bareloom Bamboo Fiber-326", "Woven_100% Bareloom Flax Bamboo-332", 
+        "Woven_100% Bareloom Flax Reed-333", "Woven_100% Bareloom Hemp-334", 
+        "Woven_100% Bareloom Jute Flax-321", "Woven_100% Bareloom Jute-322", 
+        "Woven_100% Bareloom Knaf-323", "Woven_100% Bareloom Rammus-325", 
+        "Woven_100% Bareloom Rammus-327", "Woven_100% Bareloom Rammus-328", 
+        "Woven_100% Bareloom Rammus-329", "Woven_100% Bareloom Rammus-330", 
+        "Woven_100% Bareloom Rammus-331", "Woven_100% Bareloom Red Knaf-324"
+    ];
+
     const fabricData = {
-        blackout: [
-            { name: "Bermuda White", img: "https://placehold.co/200x150?text=Bermuda+White" },
-            { name: "Bermuda Grey", img: "https://placehold.co/200x150?text=Bermuda+Grey" },
-            { name: "Bermuda Black", img: "https://placehold.co/200x150?text=Bermuda+Black" },
-            { name: "Bermuda Yellow", img: "https://placehold.co/200x150?text=Bermuda+Yellow" },
-            { name: "Bermuda Grey 2", img: "https://placehold.co/200x150?text=Bermuda+Grey+2" },
-            { name: "Bermuda Black 2", img: "https://placehold.co/200x150?text=Bermuda+Black+2" },
-            { name: "Style 7", img: "https://placehold.co/200x150?text=Style+7" },
-            { name: "Style 8", img: "https://placehold.co/200x150?text=Style+8" }
-        ],
-        filtering: [{ name: "Light Filter 1", img: "https://placehold.co/200x150?text=filtering+Style+1" }],
-        zebra: [{ name: "Classic Zebra", img: "https://placehold.co/200x150?text=Classic+Zebra" }],
-        cellular: [{ name: "Day/Night Cell", img: "https://placehold.co/200x150?text=Cellular+Style+1" }],
-        roman: [{ name: "Roman Style 1", img: "https://placehold.co/200x150?text=roman+Style+1" }],
-        woven: [{ name: "Woven Wood 1", img: "https://placehold.co/200x150?text=woven+Style+1" }],
-        outdoor: [{ name: "Outdoor Pro 1", img: "https://placehold.co/200x150?text=outdoor+Style+1" }]
+        blackout: blackoutFiles.map(file => ({
+            name: file.replace('Blackout_', '').replace(/_/g, ' '),
+            img: `image/fabrics/Blackout/${file}.png` 
+        })),
+        filtering: filteringFiles.map(file => ({
+            name: file.replace('Light Filtering_', '').replace(/_/g, ' '),
+            img: `image/fabrics/Light Filtering/${file}.png`
+        })),
+        zebra: zebraFiles.map(file => ({
+            name: file.replace('Zebra_', '').replace(/_/g, ' '),
+            img: `image/fabrics/Zebra/${file}.png`
+        })),
+        cellular: cellularFiles.map(file => ({
+            name: file.replace('Cellular_', '').replace(/_/g, ' '),
+            img: `image/fabrics/Cellular/${file}.png`
+        })),
+        roman: romanFiles.map(file => ({
+            name: file.replace('Roman_', '').replace(/-/g, ' '),
+            img: `image/fabrics/Roman/${file}.png`
+        })),
+       woven: wovenFiles.map(file => ({
+            name: file.replace('Woven_', '').replace(/-/g, ' '),
+            img: `image/fabrics/Woven/${file}.png`
+        }))
     };
 
+    let globalSelectedFabrics = new Map();
+
+    // 2. 更新面料列表
     function updateFabricList() {
-        const category = document.getElementById('fabricCategory').value;
+        const categoryInput = document.querySelector('input[name="Fabric_Category"]:checked');
         const grid = document.getElementById('fabricGrid');
         const section = document.getElementById('fabricDetailSection');
+        
+        if (!categoryInput) return;
+        
+        const category = categoryInput.value;
         grid.innerHTML = ''; 
-        if (category && fabricData[category]) {
+
+        if (fabricData[category] && fabricData[category].length > 0) {
             section.style.display = 'block';
             fabricData[category].forEach((item) => {
+                const isChecked = globalSelectedFabrics.has(item.name) ? 'checked' : '';
                 const div = document.createElement('label');
                 div.className = 'grid-item';
                 div.innerHTML = `
-                    <input type="radio" name="Fabric_Style" value="${item.name}" required>
+                    <input type="checkbox" name="Selected_Fabrics" value="${item.name}" ${isChecked} onchange="toggleFabricSelection(this)">
                     <div class="item-ui"></div>
-                    <img src="${item.img}" onclick="zoomImg(this.src)" alt="${item.name}">
+                    <img src="${item.img}" onclick="zoomImg(event, this.src)" alt="${item.name}">
                     <span>${item.name}</span>`;
                 grid.appendChild(div);
             });
-        } else { section.style.display = 'none'; }
+        } else {
+            section.style.display = 'none';
+        }
+        renderSummary();
+        updateStatusBadge();
+    }
+
+    function toggleFabricSelection(el) {
+        if (el.checked) { globalSelectedFabrics.set(el.value, true); } 
+        else { globalSelectedFabrics.delete(el.value); }
+        renderSummary();
+        updateStatusBadge();
+    }
+
+    function updateStatusBadge() {
+        const badge = document.getElementById('fabricStatus');
+        if (globalSelectedFabrics.size > 0) {
+            badge.innerText = "Ready / 已选";
+            badge.className = "status-badge status-ok";
+        } else {
+            badge.innerText = "Required / 必选";
+            badge.className = "status-badge status-required";
+        }
+    }
+
+    // 核心修改：渲染汇总区域并控制显示隐藏
+    function renderSummary() {
+        const summaryDiv = document.getElementById('selectedSummary');
+        const persistentBox = document.getElementById('persistentSummary');
+        const names = Array.from(globalSelectedFabrics.keys());
+        
+        if (names.length > 0) {
+            summaryDiv.innerHTML = names.map(n => `<span class="summary-tag">${n}</span>`).join(' ');
+            persistentBox.style.display = 'block';
+        } else {
+            summaryDiv.innerHTML = 'Selected: (None)';
+            persistentBox.style.display = 'none';
+        }
+    }
+
+    function clearFabrics() {
+        globalSelectedFabrics.clear();
+        updateFabricList();
+    }
+
+    // 3. 通用的图片放大函数
+    function zoomImg() {
+        let src = "";
+        let e = null;
+
+        if (arguments.length === 1) {
+            src = arguments[0];
+        } else if (arguments.length === 2) {
+            e = arguments[0];
+            src = arguments[1];
+        }
+
+        if (e && e.stopPropagation) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        if (modal && modalImg) {
+            modalImg.src = src;
+            modal.style.display = 'flex';
+        }
     }
 
     function validateForm() {
-        const cables = document.querySelectorAll('.cable-group');
-        let checked = false;
-        cables.forEach(c => { if(c.checked) checked = true; });
-        if(!checked) {
-            alert("Please select at least one: Charger Cable or Magnetic Cable.");
+        if (globalSelectedFabrics.size === 0) {
+            alert("⚠️ Please select at least one Fabric style!\n请至少选择一款面料样式！");
+            document.getElementById('fabricSection').scrollIntoView({ behavior: 'smooth' });
             return false;
         }
         return true;
     }
-
-    function zoomImg(src) {
-        try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
-        document.getElementById('modal-img').src = src;
-        document.getElementById('modal').style.display = 'flex';
-    }
 </script>
-
 </body>
 </html>
